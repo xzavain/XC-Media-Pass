@@ -1,0 +1,112 @@
+{
+  "name": "TicketNote",
+  "type": "object",
+  "properties": {
+    "ticket_id": {
+      "type": "string"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "Customer who owns the ticket \u2014 enables RLS visibility for customer to read staff replies"
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "author_email": {
+      "type": "string"
+    },
+    "sender_type": {
+      "type": "string",
+      "enum": [
+        "customer",
+        "staff",
+        "system_bot"
+      ],
+      "default": "customer"
+    },
+    "sender_avatar": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "is_internal": {
+      "type": "boolean",
+      "default": false,
+      "description": "True for staff-only internal notes, false for customer-visible replies"
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "default": [],
+      "description": "Files or screenshots attached to this reply"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "web",
+        "discord"
+      ],
+      "default": "web"
+    }
+  },
+  "required": [
+    "ticket_id",
+    "note"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.author_email": "{{user.email}}"
+        },
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

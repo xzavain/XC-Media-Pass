@@ -1,0 +1,144 @@
+{
+  "name": "KbMigrationLog",
+  "type": "object",
+  "properties": {
+    "batch_id": {
+      "type": "string",
+      "description": "Unique identifier grouping all records created in the same migration run"
+    },
+    "source_url": {
+      "type": "string",
+      "description": "Base URL of the BookStack instance migrated from"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "running",
+        "completed",
+        "failed",
+        "partial"
+      ],
+      "default": "running"
+    },
+    "total_shelves": {
+      "type": "number",
+      "default": 0
+    },
+    "total_books": {
+      "type": "number",
+      "default": 0
+    },
+    "total_chapters": {
+      "type": "number",
+      "default": 0
+    },
+    "total_pages": {
+      "type": "number",
+      "default": 0
+    },
+    "total_assets": {
+      "type": "number",
+      "default": 0
+    },
+    "imported_shelves": {
+      "type": "number",
+      "default": 0
+    },
+    "imported_books": {
+      "type": "number",
+      "default": 0
+    },
+    "imported_chapters": {
+      "type": "number",
+      "default": 0
+    },
+    "imported_pages": {
+      "type": "number",
+      "default": 0
+    },
+    "imported_assets": {
+      "type": "number",
+      "default": 0
+    },
+    "failed_items": {
+      "type": "number",
+      "default": 0
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "entity_type": {
+            "type": "string"
+          },
+          "source_id": {
+            "type": "string"
+          },
+          "source_name": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "default": [],
+      "description": "Per-item failure details for debugging"
+    },
+    "current_step": {
+      "type": "string",
+      "description": "Human-readable description of the current migration phase"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_by_name": {
+      "type": "string"
+    },
+    "run_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "batch_id",
+    "source_url",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

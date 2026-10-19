@@ -1,0 +1,80 @@
+{
+  "name": "Server",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Node identifier (e.g. XC-Foxtrot, XC-Kilo, XC-Sierra)"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "emby",
+        "jellyfin",
+        "downloader_sabnzbd",
+        "downloader_qbittorrent",
+        "backend_api"
+      ],
+      "description": "Platform or service running on this node"
+    },
+    "region": {
+      "type": "string",
+      "description": "Geographic region (e.g. US-East (Virginia), EU-Central (Frankfurt))"
+    },
+    "ping_target_url": {
+      "type": "string",
+      "description": "WebSocket or HTTPS endpoint for latency / speed tests"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "operational",
+        "degraded",
+        "maintenance",
+        "offline"
+      ],
+      "default": "operational"
+    },
+    "uptime_percentage": {
+      "type": "number",
+      "description": "Rolling uptime percentage (e.g. 99.98)"
+    },
+    "maintenance_window": {
+      "type": "string",
+      "description": "Nullable human-readable maintenance schedule (e.g. Scheduled: Sunday 03:00 UTC)"
+    }
+  },
+  "required": [
+    "name",
+    "service_type",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

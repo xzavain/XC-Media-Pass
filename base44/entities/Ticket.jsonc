@@ -1,0 +1,176 @@
+{
+  "name": "Ticket",
+  "type": "object",
+  "properties": {
+    "subject": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "department": {
+      "type": "string",
+      "enum": [
+        "support",
+        "billing",
+        "pre_sales",
+        "technical",
+        "feature_request"
+      ],
+      "default": "support"
+    },
+    "department_id": {
+      "type": "string",
+      "description": "Reference to TicketDepartment entity"
+    },
+    "ticket_number": {
+      "type": "string",
+      "description": "Human-readable ID e.g. TICK-84920"
+    },
+    "service": {
+      "type": "string",
+      "description": "Platform of the selected server (e.g. plex, jellyfin, emby)"
+    },
+    "server_id": {
+      "type": "string"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "pending",
+        "in_progress",
+        "waiting_on_customer",
+        "resolved",
+        "closed"
+      ],
+      "default": "open"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "normal",
+        "high",
+        "urgent"
+      ],
+      "default": "medium"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "User id of the customer this ticket belongs to"
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "customer_email": {
+      "type": "string"
+    },
+    "assigned_to_email": {
+      "type": "string"
+    },
+    "assigned_to_name": {
+      "type": "string"
+    },
+    "assigned_agent_id": {
+      "type": "string",
+      "description": "User ID of assigned agent"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "web",
+        "discord"
+      ],
+      "default": "web"
+    },
+    "discord_channel_id": {
+      "type": "string",
+      "description": "Discord channel ID when the ticket was created or synced via Discord"
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "default": [],
+      "description": "Files or screenshots attached when the ticket was created"
+    },
+    "sla_due_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "SLA breach deadline"
+    },
+    "csat_score": {
+      "type": "number",
+      "description": "Customer satisfaction rating 1-5"
+    },
+    "diagnostic_snapshot": {
+      "type": "object",
+      "description": "Client telemetry, transcode mode, ISP latency, and edge node test results at submission time"
+    }
+  },
+  "required": [
+    "subject",
+    "description",
+    "department",
+    "status"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

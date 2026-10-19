@@ -1,0 +1,73 @@
+{
+  "name": "SyncLog",
+  "type": "object",
+  "properties": {
+    "gateway_account_id": {
+      "type": "string",
+      "description": "Reference to PaymentGatewayAccount"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "started",
+        "completed",
+        "failed"
+      ],
+      "default": "started"
+    },
+    "records_pulled": {
+      "type": "number",
+      "default": 0
+    },
+    "records_updated": {
+      "type": "number",
+      "default": 0
+    },
+    "error_details": {
+      "type": "string"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "automated",
+        "import"
+      ],
+      "default": "manual"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

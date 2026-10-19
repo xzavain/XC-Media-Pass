@@ -1,0 +1,109 @@
+{
+  "name": "PerformanceSnapshot",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "concurrent_streams": {
+      "type": "number",
+      "default": 0
+    },
+    "peak_bitrate": {
+      "type": "number",
+      "default": 0,
+      "description": "Peak stream bitrate in kbps at capture time"
+    },
+    "total_bandwidth_kb": {
+      "type": "number",
+      "default": 0,
+      "description": "Estimated aggregate bandwidth across active streams in KB"
+    },
+    "local_bandwidth_kb": {
+      "type": "number",
+      "default": 0,
+      "description": "Bandwidth from local/private-network streams in KB"
+    },
+    "remote_bandwidth_kb": {
+      "type": "number",
+      "default": 0,
+      "description": "Bandwidth from remote/external streams in KB"
+    },
+    "transcode_count": {
+      "type": "number",
+      "default": 0
+    },
+    "direct_play_count": {
+      "type": "number",
+      "default": 0
+    },
+    "active_users": {
+      "type": "number",
+      "default": 0
+    },
+    "codec_breakdown": {
+      "type": "object",
+      "description": "Counts per codec: H264, HEVC, AV1, VP9, other"
+    },
+    "resolution_breakdown": {
+      "type": "object",
+      "description": "Counts per resolution tier: 4K, 1080p, 720p, SD, other"
+    },
+    "device_distribution": {
+      "type": "object",
+      "description": "Counts per client platform: apple_tv, roku, web, android_tv, steam_deck, ios, other"
+    },
+    "cpu_percent": {
+      "type": "number"
+    },
+    "ram_percent": {
+      "type": "number"
+    },
+    "network_io_kbps": {
+      "type": "number",
+      "description": "Estimated network throughput in kbps"
+    }
+  },
+  "required": [
+    "server_id",
+    "platform",
+    "captured_at"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

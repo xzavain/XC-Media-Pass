@@ -1,0 +1,52 @@
+{
+  "name": "TicketDepartment",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "e.g. Pre-Sales & Onboarding, Technical Streaming Issue, Billing & Account"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly identifier"
+    },
+    "requires_server": {
+      "type": "boolean",
+      "default": false,
+      "description": "True for Technical Support if user has active servers; false for Pre-Sales and Billing"
+    },
+    "is_public_pre_sales": {
+      "type": "boolean",
+      "default": false,
+      "description": "Available to users without active subscriptions"
+    },
+    "description": {
+      "type": "string"
+    },
+    "display_order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

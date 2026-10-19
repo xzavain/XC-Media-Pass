@@ -1,0 +1,75 @@
+{
+  "name": "TicketMacro",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "e.g. Standard 4K Direct Play Player Guide"
+    },
+    "department_id": {
+      "type": "string",
+      "description": "Optional reference to TicketDepartment"
+    },
+    "shortcut_key": {
+      "type": "string",
+      "description": "e.g. /directplay, /buffering"
+    },
+    "content": {
+      "type": "string",
+      "description": "Markdown with template tags like {{customer_name}}, {{server_name}}, {{ticket_number}}"
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

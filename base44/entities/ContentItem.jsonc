@@ -1,0 +1,87 @@
+{
+  "name": "ContentItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "movie",
+        "show",
+        "episode",
+        "other"
+      ],
+      "default": "movie"
+    },
+    "category": {
+      "type": "string",
+      "description": "Free-text grouping, e.g. Action, Documentary, Kids"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "thumbnail_url": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published"
+      ],
+      "default": "draft"
+    },
+    "is_free": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, content is accessible to all users regardless of plan"
+    },
+    "allowed_plan_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "StorePlan ids whose subscribers can access this content"
+    },
+    "uploaded_by_name": {
+      "type": "string"
+    },
+    "uploaded_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "content_type",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "name": "AdminManagedNodes",
+  "type": "object",
+  "properties": {
+    "node_name": {
+      "type": "string",
+      "description": "e.g. XC-Foxtrot, XC-Kilo, XC-Sierra"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "emby",
+        "jellyfin"
+      ]
+    },
+    "public_ping_endpoint": {
+      "type": "string",
+      "description": "HTTPS/WSS URL exposed for customer browser latency/jitter tests"
+    },
+    "public_speedtest_endpoint": {
+      "type": "string",
+      "description": "HTTPS URL for customer browser download throughput tests (e.g. https://speed-us-east.domain.com/payload-25mb.bin)"
+    },
+    "internal_api_endpoint": {
+      "type": "string",
+      "description": "Base URL for session kills and health polls"
+    },
+    "admin_api_token": {
+      "type": "string",
+      "description": "Encrypted master server token"
+    },
+    "assigned_region": {
+      "type": "string",
+      "description": "e.g. US-East (Virginia), EU-Central (Frankfurt)"
+    },
+    "is_public_for_diagnostics": {
+      "type": "boolean",
+      "default": true
+    },
+    "node_health_status": {
+      "type": "string",
+      "enum": [
+        "operational",
+        "degraded",
+        "maintenance",
+        "offline"
+      ],
+      "default": "operational"
+    },
+    "max_concurrent_limit": {
+      "type": "number",
+      "default": 4
+    }
+  },
+  "required": [
+    "node_name",
+    "service_type",
+    "node_health_status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "name": "KbChapter",
+  "type": "object",
+  "properties": {
+    "book_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly identifier (BookStack pattern)"
+    },
+    "description": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "book_id",
+    "title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

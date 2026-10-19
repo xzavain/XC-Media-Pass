@@ -1,0 +1,79 @@
+{
+  "name": "UserTermination",
+  "type": "object",
+  "properties": {
+    "server_user_id": {
+      "type": "string",
+      "description": "Reference to the ServerUser entity"
+    },
+    "server_id": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "username": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "stream_killed",
+        "account_suspended",
+        "account_reactivated",
+        "access_revoked",
+        "account_terminated"
+      ],
+      "description": "The administrative action taken"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "session_title": {
+      "type": "string",
+      "description": "Title of the stream that was killed, when applicable"
+    },
+    "performed_by_name": {
+      "type": "string"
+    },
+    "performed_by_email": {
+      "type": "string"
+    },
+    "performed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "server_user_id",
+    "action",
+    "performed_at"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

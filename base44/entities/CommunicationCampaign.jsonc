@@ -1,0 +1,160 @@
+{
+  "name": "CommunicationCampaign",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Campaign label"
+    },
+    "template_id": {
+      "type": "string",
+      "description": "Reference to the EmailTemplate entity"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "email",
+        "discord"
+      ],
+      "default": "email"
+    },
+    "target_audience": {
+      "type": "string",
+      "enum": [
+        "all",
+        "active",
+        "inactive",
+        "migrated",
+        "not_welcomed",
+        "custom"
+      ],
+      "default": "all",
+      "description": "Filter for which BillingCustomer records receive this campaign"
+    },
+    "target_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Explicit email list when target_audience is custom"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "scheduled",
+        "sending",
+        "sent",
+        "failed",
+        "partial"
+      ],
+      "default": "draft"
+    },
+    "scheduled_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the campaign should be dispatched (null = on-demand)"
+    },
+    "sent_count": {
+      "type": "number",
+      "default": 0
+    },
+    "failed_count": {
+      "type": "number",
+      "default": 0
+    },
+    "total_recipients": {
+      "type": "number",
+      "default": 0
+    },
+    "discord_channel_id": {
+      "type": "string"
+    },
+    "dispatched_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "result_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "default": [],
+      "description": "Per-recipient dispatch results"
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "template_id",
+    "channel",
+    "target_audience",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

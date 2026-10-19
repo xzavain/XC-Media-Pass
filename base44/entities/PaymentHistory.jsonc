@@ -1,0 +1,121 @@
+{
+  "name": "PaymentHistory",
+  "type": "object",
+  "properties": {
+    "billing_customer_id": {
+      "type": "string",
+      "description": "Reference to the BillingCustomer entity"
+    },
+    "customer_email": {
+      "type": "string"
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "processor": {
+      "type": "string",
+      "enum": [
+        "stripe",
+        "paypal",
+        "manual"
+      ]
+    },
+    "amount": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "failed",
+        "refunded",
+        "pending",
+        "disputed"
+      ],
+      "default": "success"
+    },
+    "transaction_id": {
+      "type": "string",
+      "description": "Original transaction/charge ID from the processor"
+    },
+    "invoice_number": {
+      "type": "string"
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "failure_reason": {
+      "type": "string"
+    },
+    "plan_name": {
+      "type": "string"
+    },
+    "billing_cycle": {
+      "type": "string"
+    },
+    "raw_metadata": {
+      "type": "object",
+      "description": "Full original transaction metadata preserved from the source API"
+    },
+    "imported_from_migration": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if this payment log was ingested during a migration import"
+    }
+  },
+  "required": [
+    "customer_email",
+    "processor",
+    "amount",
+    "status",
+    "payment_date"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "name": "KbPageRevision",
+  "type": "object",
+  "properties": {
+    "page_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "description": "HTML content snapshot at this revision"
+    },
+    "markdown_content": {
+      "type": "string",
+      "description": "Markdown content snapshot at this revision (if source was markdown)"
+    },
+    "version": {
+      "type": "number"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Editor's change summary (BookStack revision summary field)"
+    },
+    "revision_type": {
+      "type": "string",
+      "enum": [
+        "create",
+        "edit",
+        "restore"
+      ],
+      "default": "edit",
+      "description": "What kind of change created this revision"
+    },
+    "editor_name": {
+      "type": "string"
+    },
+    "editor_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "page_id",
+    "content",
+    "version"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

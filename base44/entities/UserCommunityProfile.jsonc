@@ -1,0 +1,85 @@
+{
+  "name": "UserCommunityProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "discord_user_id": {
+      "type": "string"
+    },
+    "discord_username": {
+      "type": "string"
+    },
+    "discord_avatar_url": {
+      "type": "string"
+    },
+    "current_tier_id": {
+      "type": "string",
+      "description": "Reference to LoyaltyTier"
+    },
+    "is_discord_synced": {
+      "type": "boolean",
+      "default": false
+    },
+    "unlocked_badge_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "user_id"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

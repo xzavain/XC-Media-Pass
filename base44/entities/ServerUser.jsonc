@@ -1,0 +1,115 @@
+{
+  "name": "ServerUser",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string",
+      "description": "Reference to the MediaServer entity"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "platform_user_id": {
+      "type": "string",
+      "description": "User (or shared-server) id on the platform"
+    },
+    "username": {
+      "type": "string",
+      "description": "Original username or email from the platform"
+    },
+    "email": {
+      "type": "string"
+    },
+    "friendly_name": {
+      "type": "string",
+      "description": "Admin-editable display name"
+    },
+    "libraries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Libraries this user currently has access to"
+    },
+    "is_suspended": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if access has been suspended by an admin"
+    },
+    "suspended_libraries_backup": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Libraries to restore when access is reactivated"
+    },
+    "trust_score": {
+      "type": "number",
+      "default": 100,
+      "description": "0-100 trust score derived from violations; 100 = no issues"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Admin-only notes about this user"
+    }
+  },
+  "required": [
+    "server_id",
+    "platform",
+    "platform_user_id",
+    "username"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

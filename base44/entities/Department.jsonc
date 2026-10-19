@@ -1,0 +1,45 @@
+{
+  "name": "Department",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string",
+      "enum": [
+        "support",
+        "billing"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "key"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

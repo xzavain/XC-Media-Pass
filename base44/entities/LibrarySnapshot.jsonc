@@ -1,0 +1,62 @@
+{
+  "name": "LibrarySnapshot",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string",
+      "description": "Reference to the MediaServer entity"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "library_id": {
+      "type": "string"
+    },
+    "library_name": {
+      "type": "string"
+    },
+    "item_count": {
+      "type": "number"
+    },
+    "storage_bytes": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "server_id",
+    "platform",
+    "library_id",
+    "item_count",
+    "storage_bytes"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

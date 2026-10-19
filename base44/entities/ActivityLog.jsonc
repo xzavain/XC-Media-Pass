@@ -1,0 +1,73 @@
+{
+  "name": "ActivityLog",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "invite_created",
+        "invite_activated",
+        "trial_extended",
+        "trial_expired",
+        "user_removed",
+        "user_suspended",
+        "server_connected",
+        "server_disconnected",
+        "invite_revoked",
+        "ticket_created",
+        "ticket_status_changed",
+        "ticket_assigned",
+        "ticket_note_added"
+      ]
+    },
+    "invitation_id": {
+      "type": "string"
+    },
+    "server_id": {
+      "type": "string"
+    },
+    "ticket_id": {
+      "type": "string"
+    },
+    "details": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    }
+  },
+  "required": [
+    "action",
+    "details"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

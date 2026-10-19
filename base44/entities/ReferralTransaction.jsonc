@@ -1,0 +1,107 @@
+{
+  "name": "ReferralTransaction",
+  "type": "object",
+  "properties": {
+    "referrer_user_id": {
+      "type": "string"
+    },
+    "referred_user_id": {
+      "type": "string"
+    },
+    "referred_email": {
+      "type": "string",
+      "description": "Obfuscated email for display"
+    },
+    "referred_plan_name": {
+      "type": "string"
+    },
+    "referred_plan_value": {
+      "type": "number"
+    },
+    "credit_amount": {
+      "type": "number",
+      "description": "Matches referred plan price"
+    },
+    "credit_type": {
+      "type": "string",
+      "default": "one_time_credit_adjustment"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending_hold_period",
+        "credited_to_balance",
+        "invoiced_applied",
+        "revoked_chargeback"
+      ],
+      "default": "pending_hold_period"
+    },
+    "payout_eligibility_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "7-day anti-fraud hold after referred customer's first billing"
+    },
+    "invoice_number": {
+      "type": "string",
+      "description": "Invoice number when credit is applied"
+    }
+  },
+  "required": [
+    "referrer_user_id",
+    "referred_user_id",
+    "credit_amount",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.referrer_user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

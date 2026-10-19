@@ -1,0 +1,138 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "description": "The role of the user in the app. Common values are admin, staff, customer \u2014 but admins can assign any custom role name.",
+      "default": "customer"
+    },
+    "media_networks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Selected streaming service/network IDs for personalized media discovery"
+    },
+    "watchlist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tmdb_id": {
+            "type": "number"
+          },
+          "media_type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "poster_path": {
+            "type": "string"
+          },
+          "added_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "plan_to_watch",
+              "watching",
+              "completed"
+            ],
+            "default": "plan_to_watch"
+          },
+          "vote_average": {
+            "type": "number"
+          },
+          "release_year": {
+            "type": "number"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "default": [],
+      "description": "User's saved media watchlist items"
+    },
+    "sync_preferences": {
+      "type": "object",
+      "properties": {
+        "plex_enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "emby_enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "sync_mode": {
+          "type": "string",
+          "enum": [
+            "bidirectional",
+            "push_only"
+          ],
+          "default": "push_only"
+        },
+        "plex_token": {
+          "type": "string"
+        },
+        "emby_host": {
+          "type": "string"
+        },
+        "emby_user": {
+          "type": "string"
+        },
+        "emby_token": {
+          "type": "string"
+        }
+      },
+      "default": {},
+      "description": "Plex/Emby watchlist sync configuration"
+    },
+    "playback_progress": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tmdb_id": {
+            "type": "number"
+          },
+          "media_type": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "unwatched",
+              "in_progress",
+              "watched"
+            ]
+          },
+          "watched_episodes": {
+            "type": "number"
+          },
+          "total_episodes": {
+            "type": "number"
+          },
+          "last_watched": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "default": [],
+      "description": "Playback progress tracked per media item"
+    }
+  },
+  "required": [
+    "role"
+  ]
+}

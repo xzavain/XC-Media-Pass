@@ -1,0 +1,91 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "default": "active"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "private"
+      ],
+      "default": "public",
+      "description": "Public projects are visible to all staff; private projects only to listed members and admins"
+    },
+    "member_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Staff emails who can access this project when visibility is private"
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "$and": [
+            {
+              "user_condition": {
+                "role": "staff"
+              }
+            },
+            {
+              "$or": [
+                {
+                  "data.visibility": "public"
+                },
+                {
+                  "data.member_emails": "{{user.email}}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

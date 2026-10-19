@@ -1,0 +1,184 @@
+{
+  "name": "BillingCustomer",
+  "type": "object",
+  "properties": {
+    "user_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE",
+        "CANCELED",
+        "PENDING_MIGRATION"
+      ],
+      "default": "ACTIVE"
+    },
+    "bill_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "PayPal",
+        "Stripe",
+        "Manual"
+      ]
+    },
+    "billed_price": {
+      "type": "number"
+    },
+    "plan_id": {
+      "type": "string",
+      "description": "Reference to the StorePlan entity"
+    },
+    "billing_cycle": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "quarterly",
+        "yearly",
+        "weekly"
+      ],
+      "default": "monthly"
+    },
+    "addon_product_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "IDs of AddonProduct subscriptions attached to this customer"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "stripe",
+        "paypal"
+      ],
+      "default": "direct",
+      "description": "Where this customer record originated"
+    },
+    "source_customer_id": {
+      "type": "string",
+      "description": "Original customer ID in the source system (Stripe customer ID, PayPal customer ID, etc.)"
+    },
+    "original_signup_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the customer originally signed up on the source platform"
+    },
+    "migration_status": {
+      "type": "string",
+      "enum": [
+        "not_applicable",
+        "pending",
+        "imported",
+        "activated",
+        "failed"
+      ],
+      "default": "not_applicable"
+    },
+    "welcome_email_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the deferred onboarding welcome email has been dispatched"
+    },
+    "contact_phone": {
+      "type": "string"
+    },
+    "address_line_1": {
+      "type": "string"
+    },
+    "address_city": {
+      "type": "string"
+    },
+    "address_state": {
+      "type": "string"
+    },
+    "address_postcode": {
+      "type": "string"
+    },
+    "address_country": {
+      "type": "string"
+    },
+    "custom_fields": {
+      "type": "object",
+      "description": "Custom field data preserved from import"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Staff/admin manual adjustment notes"
+    }
+  },
+  "required": [
+    "user_name",
+    "email",
+    "status",
+    "bill_date",
+    "payment_method",
+    "billed_price",
+    "plan_id"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

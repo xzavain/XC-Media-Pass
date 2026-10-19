@@ -1,0 +1,79 @@
+{
+  "name": "BandwidthBreakdown",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "dimension": {
+      "type": "string",
+      "enum": [
+        "user",
+        "media"
+      ],
+      "description": "Whether this row groups bandwidth by user or by media asset"
+    },
+    "label": {
+      "type": "string",
+      "description": "Username (user dimension) or media title (media dimension)"
+    },
+    "total_bandwidth_kb": {
+      "type": "number",
+      "default": 0,
+      "description": "Cumulative estimated data transferred in KB"
+    },
+    "stream_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of sync cycles this entry was active"
+    },
+    "peak_bitrate": {
+      "type": "number",
+      "default": 0,
+      "description": "Highest observed bitrate in kbps"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "server_id",
+    "dimension",
+    "label",
+    "last_updated"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

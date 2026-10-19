@@ -1,0 +1,82 @@
+{
+  "name": "UserViolation",
+  "type": "object",
+  "properties": {
+    "server_user_id": {
+      "type": "string",
+      "description": "Reference to the ServerUser entity"
+    },
+    "server_id": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "username": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "concurrent_limit",
+        "impossible_travel",
+        "geo_mismatch",
+        "other"
+      ],
+      "description": "The rule that was violated"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium"
+    },
+    "description": {
+      "type": "string"
+    },
+    "detected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Extra context, e.g. concurrent count, travel distance, involved IPs"
+    }
+  },
+  "required": [
+    "server_user_id",
+    "type",
+    "severity",
+    "detected_at"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

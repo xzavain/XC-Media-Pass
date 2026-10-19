@@ -1,0 +1,125 @@
+{
+  "name": "DiscordBotConfig",
+  "type": "object",
+  "properties": {
+    "bot_name": {
+      "type": "string",
+      "default": "Support Bot"
+    },
+    "avatar_url": {
+      "type": "string",
+      "description": "Bot avatar image URL"
+    },
+    "status_activity": {
+      "type": "string",
+      "description": "Bot status text shown in Discord"
+    },
+    "status_type": {
+      "type": "string",
+      "enum": [
+        "playing",
+        "listening",
+        "watching",
+        "competing"
+      ],
+      "default": "playing"
+    },
+    "webhook_url": {
+      "type": "string",
+      "description": "Main Discord webhook URL for ticket event notifications"
+    },
+    "log_webhook_url": {
+      "type": "string",
+      "description": "Optional separate webhook for staff-only log events"
+    },
+    "panel_channel_id": {
+      "type": "string",
+      "description": "Discord channel ID where the ticket creation panel is deployed"
+    },
+    "support_role_id": {
+      "type": "string",
+      "description": "Discord role ID pinged when a new ticket is created"
+    },
+    "agent_role_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Discord role IDs permitted to manage tickets"
+    },
+    "auto_create_channels": {
+      "type": "boolean",
+      "default": true,
+      "description": "Auto-create a private Discord channel for each new ticket"
+    },
+    "panel_embed_title": {
+      "type": "string",
+      "default": "Support Tickets"
+    },
+    "panel_embed_description": {
+      "type": "string",
+      "default": "Click the button below to create a support ticket. A private channel will be opened for you."
+    },
+    "panel_embed_color": {
+      "type": "string",
+      "default": "#a3e635"
+    },
+    "panel_button_label": {
+      "type": "string",
+      "default": "Create Ticket"
+    },
+    "panel_button_emoji": {
+      "type": "string",
+      "default": "\ud83c\udfab"
+    },
+    "notify_on_create": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_on_reply": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_on_status_change": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_on_assign": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": false
+    },
+    "discord_client_id": {
+      "type": "string",
+      "description": "Discord OAuth2 application Client ID for community authorization flow"
+    },
+    "discord_redirect_uri": {
+      "type": "string",
+      "description": "OAuth2 redirect URI (defaults to {origin}/discord-callback if blank)"
+    }
+  },
+  "required": [
+    "bot_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

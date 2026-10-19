@@ -1,0 +1,152 @@
+{
+  "name": "SubscriptionMigration",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "enum": [
+        "stripe",
+        "paypal"
+      ],
+      "description": "The external platform this subscription was migrated from"
+    },
+    "source_customer_id": {
+      "type": "string",
+      "description": "Original customer/client ID in the source system"
+    },
+    "source_subscription_id": {
+      "type": "string",
+      "description": "Original subscription/recurring payment ID in the source system"
+    },
+    "customer_email": {
+      "type": "string"
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "original_plan_name": {
+      "type": "string"
+    },
+    "original_price": {
+      "type": "number"
+    },
+    "original_currency": {
+      "type": "string",
+      "default": "USD"
+    },
+    "billing_cycle": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "quarterly",
+        "yearly",
+        "weekly"
+      ],
+      "default": "monthly"
+    },
+    "signup_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Original subscription signup date from the source platform"
+    },
+    "next_billing_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "imported",
+        "activated",
+        "failed",
+        "skipped"
+      ],
+      "default": "pending"
+    },
+    "imported_customer_id": {
+      "type": "string",
+      "description": "Reference to the BillingCustomer record created or matched by this migration"
+    },
+    "mapped_plan_id": {
+      "type": "string",
+      "description": "StorePlan ID this migration was mapped to"
+    },
+    "raw_metadata": {
+      "type": "object",
+      "description": "Full original subscription metadata preserved from the source API"
+    },
+    "error_message": {
+      "type": "string"
+    },
+    "migrated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "migrated_by_name": {
+      "type": "string"
+    },
+    "migrated_by_email": {
+      "type": "string"
+    },
+    "batch_id": {
+      "type": "string",
+      "description": "Groups migrations imported in the same sync batch"
+    }
+  },
+  "required": [
+    "source",
+    "source_customer_id",
+    "customer_email",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "BillingExpense",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "expense_type": {
+      "type": "string",
+      "enum": [
+        "processor_fee",
+        "server_cost",
+        "shared_overhead",
+        "live_tv_credit_cost"
+      ]
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "XC Echo",
+        "XC Foxtrot",
+        "Live TV",
+        "All XC",
+        "All"
+      ],
+      "description": "Which active subscriptions this expense is allocated across"
+    },
+    "monthly_cost": {
+      "type": "number",
+      "default": 0,
+      "description": "Monthly cost in dollars. For live_tv_credit_cost this is the per-credit unit cost."
+    },
+    "fee_percent": {
+      "type": "number",
+      "default": 0,
+      "description": "Percentage fee, used only for processor_fee expenses"
+    },
+    "fee_fixed": {
+      "type": "number",
+      "default": 0,
+      "description": "Fixed fee per transaction, used only for processor_fee expenses"
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "Payment method this fee applies to (e.g. PayPal, Stripe), used only for processor_fee expenses"
+    }
+  },
+  "required": [
+    "name",
+    "expense_type",
+    "scope"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "name": "LinkedMediaAccount",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "User id of the customer who owns this linked account"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "emby",
+        "jellyfin"
+      ]
+    },
+    "server_id": {
+      "type": "string",
+      "description": "Server name identifier (e.g. XC-Foxtrot, XC-Kilo, XC-Sierra)"
+    },
+    "server_url": {
+      "type": "string",
+      "description": "Base URL of the media server API"
+    },
+    "external_user_id": {
+      "type": "string",
+      "description": "Plex account ID / Emby User GUID / Jellyfin User GUID"
+    },
+    "auth_token": {
+      "type": "string",
+      "description": "API User Token / Plex Auth Token for the linked account"
+    },
+    "plex_username": {
+      "type": "string",
+      "description": "Plex linked username (Plex only)"
+    },
+    "plex_email": {
+      "type": "string",
+      "description": "Plex linked email (Plex only)"
+    },
+    "stream_limit": {
+      "type": "number",
+      "default": 2,
+      "description": "Concurrent stream cap (e.g. 2, 3, or 4)"
+    },
+    "last_sync_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id",
+    "service_type",
+    "server_url",
+    "auth_token"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

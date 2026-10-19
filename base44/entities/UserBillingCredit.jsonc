@@ -1,0 +1,63 @@
+{
+  "name": "UserBillingCredit",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "current_wallet_balance": {
+      "type": "number",
+      "default": 0,
+      "description": "Auto-deducted from upcoming invoice cycle"
+    },
+    "last_invoice_deduction": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "user_id"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

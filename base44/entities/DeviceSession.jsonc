@@ -1,0 +1,138 @@
+{
+  "name": "DeviceSession",
+  "type": "object",
+  "properties": {
+    "session_key": {
+      "type": "string",
+      "description": "Unique stream identifier from target media server API"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "emby",
+        "jellyfin"
+      ]
+    },
+    "device_name": {
+      "type": "string",
+      "description": "e.g. Nvidia Shield Pro, Apple TV 4K, LG OLED webOS"
+    },
+    "client_app": {
+      "type": "string",
+      "description": "e.g. Plex for Android TV, Emby Theater, Jellyfin Web"
+    },
+    "client_version": {
+      "type": "string"
+    },
+    "ip_address": {
+      "type": "string"
+    },
+    "geo_country": {
+      "type": "string"
+    },
+    "geo_city": {
+      "type": "string"
+    },
+    "geo_flag_emoji": {
+      "type": "string"
+    },
+    "playback_state": {
+      "type": "string",
+      "enum": [
+        "playing",
+        "paused",
+        "buffering",
+        "idle"
+      ],
+      "default": "idle"
+    },
+    "media_title": {
+      "type": "string"
+    },
+    "media_type": {
+      "type": "string",
+      "description": "Movie, Episode, LiveTV"
+    },
+    "poster_url": {
+      "type": "string"
+    },
+    "media_year": {
+      "type": "number"
+    },
+    "resolution_badge": {
+      "type": "string",
+      "description": "e.g. 4K HDR, 1080p SDR"
+    },
+    "duration_ms": {
+      "type": "number"
+    },
+    "view_offset_ms": {
+      "type": "number"
+    },
+    "last_active_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "session_key",
+    "user_id",
+    "service_type"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

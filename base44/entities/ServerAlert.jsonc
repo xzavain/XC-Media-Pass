@@ -1,0 +1,85 @@
+{
+  "name": "ServerAlert",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string",
+      "description": "Server ID this alert targets; empty when is_all_servers is true"
+    },
+    "is_all_servers": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if this alert applies to all servers"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "critical",
+        "maintenance"
+      ],
+      "default": "info"
+    },
+    "title": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string",
+      "description": "HTML or plain-text alert body shown to customers"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "severity",
+    "title",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

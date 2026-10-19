@@ -1,0 +1,68 @@
+{
+  "name": "SubscriptionCategory",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "e.g. XC Foxtrot, XC Echo, Live TV, Uncategorized"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly unique identifier"
+    },
+    "color_hex": {
+      "type": "string",
+      "default": "#3B82F6",
+      "description": "Hex color used for plan badges and calendar events"
+    },
+    "description": {
+      "type": "string"
+    },
+    "match_tokens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Substring or regex tokens used to auto-classify a raw product name into this category"
+    },
+    "display_order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

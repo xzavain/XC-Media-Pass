@@ -1,0 +1,192 @@
+{
+  "name": "ProjectTask",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string"
+    },
+    "column_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "description": "HTML content from the rich text editor"
+    },
+    "work_package_type": {
+      "type": "string",
+      "enum": [
+        "feature",
+        "bug",
+        "task",
+        "milestone",
+        "phase"
+      ],
+      "default": "task"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "dates_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "assignee_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Emails of staff/admin users assigned to this task"
+    },
+    "assignee_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "story_points": {
+      "type": "number",
+      "default": 0,
+      "description": "Agile story point estimate"
+    },
+    "estimated_hours": {
+      "type": "number",
+      "default": 0,
+      "description": "Estimated hours to complete"
+    },
+    "spent_hours": {
+      "type": "number",
+      "default": 0,
+      "description": "Total logged hours (denormalized from TaskTimeEntry for quick display)"
+    },
+    "parent_task_id": {
+      "type": "string",
+      "description": "Reference to parent ProjectTask for hierarchy"
+    },
+    "milestone": {
+      "type": "string",
+      "description": "Version or milestone label for attribute-based board grouping"
+    },
+    "checklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "done": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "default": [],
+      "description": "Inline checklist items on the work package"
+    },
+    "linked_ticket_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Support Ticket IDs cross-referenced to this task"
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "IDs of predecessor tasks this task depends on"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "column_id",
+    "title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "name": "MediaServer",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Display name for this server"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ],
+      "description": "Media server platform type"
+    },
+    "url": {
+      "type": "string",
+      "description": "Server base URL (e.g. http://192.168.1.100:8096)"
+    },
+    "api_key": {
+      "type": "string",
+      "description": "API key or token for authentication"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "connected",
+        "disconnected",
+        "error"
+      ],
+      "default": "disconnected"
+    },
+    "libraries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Available libraries on this server"
+    },
+    "last_synced": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "users_last_synced": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When server users were last synced"
+    }
+  },
+  "required": [
+    "name",
+    "platform",
+    "url",
+    "api_key"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

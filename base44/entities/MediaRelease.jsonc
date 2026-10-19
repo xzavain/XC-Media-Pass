@@ -1,0 +1,130 @@
+{
+  "name": "MediaRelease",
+  "type": "object",
+  "properties": {
+    "tmdb_id": {
+      "type": "number",
+      "description": "TMDB ID for this movie or TV show"
+    },
+    "media_type": {
+      "type": "string",
+      "enum": [
+        "movie",
+        "tv_show"
+      ]
+    },
+    "season_number": {
+      "type": "number",
+      "description": "Nullable season number for TV shows"
+    },
+    "title": {
+      "type": "string"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "overview": {
+      "type": "string"
+    },
+    "poster_path": {
+      "type": "string"
+    },
+    "backdrop_path": {
+      "type": "string"
+    },
+    "genres": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "runtime_minutes": {
+      "type": "number"
+    },
+    "certification": {
+      "type": "string",
+      "description": "PG-13, R, TV-MA, etc."
+    },
+    "theatrical_release_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "digital_vod_release_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "physical_disc_release_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "estimated_server_arrival_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "server_import_status": {
+      "type": "string",
+      "enum": [
+        "unannounced",
+        "monitored",
+        "downloading",
+        "imported_live"
+      ],
+      "default": "unannounced"
+    },
+    "target_servers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "trailer_youtube_key": {
+      "type": "string"
+    },
+    "studio": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tmdb_id",
+    "media_type",
+    "title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

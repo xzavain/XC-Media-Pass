@@ -1,0 +1,89 @@
+{
+  "name": "ProjectBoard",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "Reference to the Project entity"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name for this board configuration"
+    },
+    "board_type": {
+      "type": "string",
+      "enum": [
+        "status",
+        "assignee",
+        "milestone",
+        "priority"
+      ],
+      "default": "status",
+      "description": "How cards are grouped: status uses ProjectColumn, others group dynamically by attribute"
+    },
+    "is_default": {
+      "type": "boolean",
+      "default": false
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "name",
+    "board_type"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

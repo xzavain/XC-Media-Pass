@@ -1,0 +1,78 @@
+{
+  "name": "ReferralProgram",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "referral_code": {
+      "type": "string",
+      "description": "Unique shortcode e.g. STREAM-ALEX-99"
+    },
+    "referral_link": {
+      "type": "string"
+    },
+    "total_referred_users": {
+      "type": "number",
+      "default": 0
+    },
+    "total_credit_earned": {
+      "type": "number",
+      "default": 0
+    },
+    "pending_credit_balance": {
+      "type": "number",
+      "default": 0
+    },
+    "lifetime_credit_applied": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "user_id",
+    "referral_code"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

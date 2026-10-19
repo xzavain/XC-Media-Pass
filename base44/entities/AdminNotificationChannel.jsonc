@@ -1,0 +1,115 @@
+{
+  "name": "AdminNotificationChannel",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "e.g. #digital-vod-drops, #new-server-imports"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "discord_webhook",
+        "slack_webhook",
+        "ntfy"
+      ]
+    },
+    "webhook_url": {
+      "type": "string"
+    },
+    "event_triggers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "theatrical_today",
+          "vod_dropped",
+          "imported_to_server"
+        ]
+      },
+      "default": []
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "bot_name": {
+      "type": "string",
+      "default": "MediaEdge Announcer"
+    },
+    "bot_avatar_url": {
+      "type": "string"
+    },
+    "embed_color": {
+      "type": "string",
+      "default": "#6366f1"
+    },
+    "mention_type": {
+      "type": "string",
+      "enum": [
+        "none",
+        "everyone",
+        "here",
+        "role"
+      ],
+      "default": "none"
+    },
+    "role_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "platform",
+    "webhook_url"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

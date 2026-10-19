@@ -1,0 +1,110 @@
+{
+  "name": "UserUniversalMediaIdentity",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Primary portal customer ID"
+    },
+    "plex_connected": {
+      "type": "boolean",
+      "default": false
+    },
+    "plex_username": {
+      "type": "string"
+    },
+    "plex_email": {
+      "type": "string"
+    },
+    "plex_user_uuid": {
+      "type": "string"
+    },
+    "plex_auth_token": {
+      "type": "string",
+      "description": "Long-lived user auth token obtained via Plex OAuth PIN flow"
+    },
+    "emby_connected": {
+      "type": "boolean",
+      "default": false
+    },
+    "emby_username": {
+      "type": "string"
+    },
+    "emby_user_guid": {
+      "type": "string"
+    },
+    "emby_access_token": {
+      "type": "string",
+      "description": "Token created via Emby Connect / AuthenticateByName"
+    },
+    "jellyfin_connected": {
+      "type": "boolean",
+      "default": false
+    },
+    "jellyfin_username": {
+      "type": "string"
+    },
+    "jellyfin_user_id": {
+      "type": "string"
+    },
+    "jellyfin_access_token": {
+      "type": "string"
+    },
+    "last_sync_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

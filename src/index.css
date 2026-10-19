@@ -1,0 +1,372 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --font-heading: ui-sans-serif, system-ui, sans-serif;
+    --font-body: ui-sans-serif, system-ui, sans-serif;
+    --font-display: ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 6% 4%;
+    --foreground: 0 0% 98%;
+    --card: 240 5% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 5% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 84 81% 44%;
+    --primary-foreground: 0 0% 8%;
+    --secondary: 240 4% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4% 12%;
+    --muted-foreground: 0 0% 96%;
+    --accent: 240 4% 12%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 55%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 14%;
+    --input: 240 4% 14%;
+    --ring: 84 81% 44%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 84 81% 44%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 84 81% 44%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+}
+
+
+/* ---- Login page animated tech background ---- */
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.13; }
+}
+@keyframes scan-y {
+  0% { transform: translateY(-10vh); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+@keyframes scan-x {
+  0% { transform: translateX(-10vw); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(110vw); opacity: 0; }
+}
+@keyframes corner-flicker {
+  0%, 100% { opacity: 0.3; }
+  48%, 52% { opacity: 0.6; }
+  50% { opacity: 0.15; }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
+}
+@keyframes glow-drift-a {
+  0%, 100% { transform: translate(-50%, -50%) translate(0, 0) scale(1); opacity: 0.85; }
+  25% { transform: translate(-50%, -50%) translate(6rem, -4rem) scale(1.1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) translate(3rem, 5rem) scale(0.95); opacity: 0.7; }
+  75% { transform: translate(-50%, -50%) translate(-5rem, 2rem) scale(1.05); opacity: 0.9; }
+}
+@keyframes glow-drift-b {
+  0%, 100% { transform: translate(-50%, -50%) translate(0, 0) scale(1); opacity: 0.8; }
+  25% { transform: translate(-50%, -50%) translate(-6rem, 4rem) scale(1.12); opacity: 1; }
+  50% { transform: translate(-50%, -50%) translate(-3rem, -5rem) scale(0.92); opacity: 0.65; }
+  75% { transform: translate(-50%, -50%) translate(5rem, -2rem) scale(1.08); opacity: 0.85; }
+}
+@keyframes glow-drift-c {
+  0%, 100% { transform: translate(-50%, -50%) translate(0, 0) scale(1); opacity: 0.7; }
+  33% { transform: translate(-50%, -50%) translate(4rem, 3rem) scale(1.15); opacity: 1; }
+  66% { transform: translate(-50%, -50%) translate(-4rem, -3rem) scale(0.9); opacity: 0.6; }
+}
+
+.animate-grid-pulse { animation: grid-pulse 6s ease-in-out infinite; }
+.animate-scan-y { animation: scan-y 8s linear infinite; }
+.animate-scan-x { animation: scan-x 11s linear infinite; }
+.animate-corner-flicker { animation: corner-flicker 5s ease-in-out infinite; }
+.animate-glow-pulse { animation: glow-pulse 12s ease-in-out infinite; }
+.animate-glow-drift-a { animation: glow-drift-a 16s ease-in-out infinite; }
+.animate-glow-drift-b { animation: glow-drift-b 20s ease-in-out infinite; }
+.animate-glow-drift-c { animation: glow-drift-c 14s ease-in-out infinite; }
+
+@keyframes logo-glow {
+  0%, 100% { box-shadow: 0 0 4px 1px rgba(163, 230, 53, 0.7); opacity: 1; }
+  50% { box-shadow: 0 0 12px 5px rgba(163, 230, 53, 0.9); opacity: 0.7; }
+}
+
+.logo-pulse {
+  animation: logo-glow 2s ease-in-out infinite;
+}
+
+@keyframes map-dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(163, 230, 53, 0.55); }
+  50% { box-shadow: 0 0 0 8px rgba(163, 230, 53, 0); }
+}
+
+.stream-marker-icon { background: transparent; border: none; }
+.map-stream-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: rgba(163, 230, 53, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: map-dot-pulse 1.6s ease-out infinite;
+}
+
+.map-stream-dot-core {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #a3e635;
+  box-shadow: 0 0 6px 2px rgba(163, 230, 53, 0.9);
+}
+
+.kb-editor .ql-toolbar {
+  background: rgba(39, 39, 42, 0.8);
+  border-color: rgba(63, 63, 70, 0.8) !important;
+}
+.kb-editor .ql-container {
+  border-color: rgba(63, 63, 70, 0.8) !important;
+  min-height: 280px;
+  font-size: 0.9rem;
+  color: #e4e4e7;
+}
+.kb-editor .ql-editor {
+  min-height: 280px;
+}
+.kb-editor .ql-stroke { stroke: #a1a1aa; }
+.kb-editor .ql-fill { fill: #a1a1aa; }
+.kb-editor .ql-picker { color: #a1a1aa; }
+
+.kb-content img, .kb-content video {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 0.75rem 0;
+}
+.kb-content a {
+  color: #a3e635;
+  text-decoration: underline;
+}
+.kb-content pre {
+  background: rgba(24, 24, 27, 0.8);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+.kb-content blockquote {
+  border-left: 3px solid #a3e635;
+  padding-left: 1rem;
+  color: #a1a1aa;
+}
+
+/* ---- BookStack callout boxes (colored note sections) ---- */
+.kb-content .callout,
+.kb-content [data-callout-type] {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid rgba(163, 230, 53, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  margin: 1rem 0;
+  color: #e4e4e7;
+}
+.kb-content .callout p:last-child,
+.kb-content [data-callout-type] p:last-child { margin-bottom: 0; }
+
+.kb-content .callout.info,
+.kb-content [data-callout-type="info"] {
+  border-left-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+.kb-content .callout.success,
+.kb-content [data-callout-type="success"] {
+  border-left-color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+.kb-content .callout.warning,
+.kb-content [data-callout-type="warning"] {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+.kb-content .callout.danger,
+.kb-content [data-callout-type="danger"] {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* ---- BookStack collapsible dropdown sections (<details>/<summary>) ---- */
+.kb-content details {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(63, 63, 70, 0.8);
+  background: rgba(39, 39, 42, 0.4);
+  margin: 1rem 0;
+}
+.kb-content details + details { margin-top: -0.5rem; }
+.kb-content details[open] {
+  border-color: rgba(163, 230, 53, 0.3);
+  background: rgba(39, 39, 42, 0.6);
+}
+.kb-content summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #e4e4e7;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+  list-style: none;
+}
+.kb-content summary::-webkit-details-marker { display: none; }
+.kb-content summary::before {
+  content: "▶";
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+  color: #a3e635;
+}
+.kb-content details[open] summary::before { transform: rotate(90deg); }
+.kb-content details[open] summary {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(63, 63, 70, 0.5);
+}
+
+/* ---- WYSIWYG editor preview (mirror .kb-content styles inside Quill) ---- */
+.ql-editor .callout,
+.ql-editor [data-callout-type] {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid rgba(163, 230, 53, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  margin: 1rem 0;
+  color: #e4e4e7;
+}
+.ql-editor .callout.info,
+.ql-editor [data-callout-type="info"] {
+  border-left-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+.ql-editor .callout.success,
+.ql-editor [data-callout-type="success"] {
+  border-left-color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+.ql-editor .callout.warning,
+.ql-editor [data-callout-type="warning"] {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+.ql-editor .callout.danger,
+.ql-editor [data-callout-type="danger"] {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.ql-editor details {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(63, 63, 70, 0.8);
+  background: rgba(39, 39, 42, 0.4);
+  margin: 1rem 0;
+}
+.ql-editor details[open] {
+  border-color: rgba(163, 230, 53, 0.3);
+  background: rgba(39, 39, 42, 0.6);
+}
+.ql-editor summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #e4e4e7;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+  list-style: none;
+}
+.ql-editor summary::-webkit-details-marker { display: none; }
+.ql-editor summary::before {
+  content: "▶";
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+  color: #a3e635;
+}
+.ql-editor details[open] summary::before { transform: rotate(90deg); }
+.ql-editor details[open] summary {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(63, 63, 70, 0.5);
+}
+
+/* ---- Dark mode: high-contrast white typography ----
+   Replace grey zinc text/icons with white in dark mode for legibility.
+   Light mode is untouched — zinc greys stay readable on light backgrounds. */
+.dark .text-zinc-300,
+.dark .text-zinc-400,
+.dark .text-zinc-500,
+.dark .text-zinc-600,
+.dark .text-zinc-700 {
+  color: #ffffff;
+}
+
+.dark .placeholder\:text-zinc-400::placeholder,
+.dark .placeholder\:text-zinc-500::placeholder,
+.dark .placeholder\:text-zinc-600::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}

@@ -1,0 +1,105 @@
+{
+  "name": "Subscription",
+  "type": "object",
+  "properties": {
+    "gateway_account_id": {
+      "type": "string",
+      "description": "Reference to PaymentGatewayAccount"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to SubscriptionCustomer"
+    },
+    "category_id": {
+      "type": "string",
+      "description": "Reference to SubscriptionCategory (nullable = Uncategorized)"
+    },
+    "plan_id": {
+      "type": "string",
+      "description": "Reference to SubscriptionPlan"
+    },
+    "external_subscription_id": {
+      "type": "string",
+      "description": "Stripe sub_xxx or PayPal I-xxx"
+    },
+    "raw_product_name": {
+      "type": "string",
+      "description": "Raw product title pulled from the gateway"
+    },
+    "amount": {
+      "type": "number",
+      "default": 0
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD"
+    },
+    "billing_interval": {
+      "type": "string",
+      "default": "month"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "past_due",
+        "canceled",
+        "trialing",
+        "paused"
+      ],
+      "default": "active"
+    },
+    "current_period_start": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "next_billing_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Indexed for calendar lookups"
+    },
+    "cancel_at_period_end": {
+      "type": "boolean",
+      "default": false
+    },
+    "last_synced_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "raw_product_name",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

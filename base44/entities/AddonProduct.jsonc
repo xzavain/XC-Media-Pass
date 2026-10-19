@@ -1,0 +1,97 @@
+{
+  "name": "AddonProduct",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number",
+      "default": 0
+    },
+    "billing_cycle": {
+      "type": "string",
+      "enum": [
+        "one_time",
+        "monthly",
+        "yearly"
+      ],
+      "default": "monthly"
+    },
+    "category": {
+      "type": "string",
+      "description": "Grouping label e.g. Extra Streams, Live TV, Storage, VPN"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby",
+        "other"
+      ],
+      "default": "other"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "max_concurrent_streams": {
+      "type": "number",
+      "default": 0,
+      "description": "Additional concurrent streams this add-on grants (0 = N/A)"
+    },
+    "live_tv_credits": {
+      "type": "number",
+      "default": 0
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "hidden"
+      ],
+      "default": "public"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "stripe_price_id": {
+      "type": "string"
+    },
+    "display_order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "price",
+    "billing_cycle"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "name": "StorePlan",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "description": "Category used to group plans in the storefront, e.g. Plex, Emby, Jellyfin, Live TV"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby",
+        "other"
+      ],
+      "default": "other"
+    },
+    "price": {
+      "type": "number",
+      "default": 0
+    },
+    "billing_interval": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "yearly"
+      ],
+      "default": "monthly"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "hidden"
+      ],
+      "default": "public"
+    },
+    "checkout_token": {
+      "type": "string",
+      "description": "Unique token used to build the direct checkout URL"
+    },
+    "stripe_price_id": {
+      "type": "string",
+      "description": "Stripe Price ID used to create the checkout session for this plan"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "server": {
+      "type": "string",
+      "enum": [
+        "XC Echo",
+        "XC Foxtrot",
+        "Live TV"
+      ],
+      "default": "XC Echo",
+      "description": "Which internal server this plan is billed/allocated against"
+    },
+    "live_tv_credits": {
+      "type": "number",
+      "default": 0,
+      "description": "Live TV credits consumed per subscription (0 for non Live TV plans)"
+    },
+    "library_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "server_id": {
+            "type": "string"
+          },
+          "library_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "description": "Maps this plan to specific library IDs per MediaServer it grants access to"
+    },
+    "max_concurrent_streams": {
+      "type": "number",
+      "default": 0,
+      "description": "Maximum simultaneous streams allowed for this plan (0 = unlimited)"
+    },
+    "block_4k_transcode": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, sessions transcoding 4K content on this plan are automatically stopped"
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "price",
+    "checkout_token"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "name": "TaskTimeEntry",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Reference to the ProjectTask entity"
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Reference to the Project entity for aggregate queries"
+    },
+    "hours": {
+      "type": "number",
+      "description": "Hours logged"
+    },
+    "description": {
+      "type": "string",
+      "description": "What the time was spent on"
+    },
+    "logged_by_name": {
+      "type": "string"
+    },
+    "logged_by_email": {
+      "type": "string"
+    },
+    "logged_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "task_id",
+    "hours",
+    "logged_at"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

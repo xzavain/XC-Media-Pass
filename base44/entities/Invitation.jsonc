@@ -1,0 +1,137 @@
+{
+  "name": "Invitation",
+  "type": "object",
+  "properties": {
+    "token": {
+      "type": "string",
+      "description": "Unique secure token for the invitation link"
+    },
+    "server_id": {
+      "type": "string",
+      "description": "Reference to the MediaServer entity"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "allowed_libraries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "duration_type": {
+      "type": "string",
+      "enum": [
+        "1_day",
+        "2_days",
+        "1_week",
+        "custom"
+      ],
+      "default": "1_day"
+    },
+    "duration_hours": {
+      "type": "number",
+      "description": "Duration in hours"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "active",
+        "expired",
+        "revoked"
+      ],
+      "default": "pending"
+    },
+    "username": {
+      "type": "string",
+      "description": "Username set by the invited user"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email of the invited user"
+    },
+    "platform_user_id": {
+      "type": "string",
+      "description": "User ID on the media server platform"
+    },
+    "activated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "max_uses": {
+      "type": "number",
+      "default": 1
+    },
+    "use_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "token",
+    "server_id",
+    "platform",
+    "duration_type",
+    "duration_hours"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

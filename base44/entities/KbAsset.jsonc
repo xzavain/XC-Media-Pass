@@ -1,0 +1,99 @@
+{
+  "name": "KbAsset",
+  "type": "object",
+  "properties": {
+    "file_name": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "Re-hosted URL of the asset in this platform's storage"
+    },
+    "file_type": {
+      "type": "string",
+      "enum": [
+        "image",
+        "gif",
+        "video",
+        "document",
+        "other"
+      ]
+    },
+    "file_size": {
+      "type": "number",
+      "description": "Size in bytes"
+    },
+    "category": {
+      "type": "string",
+      "default": "General"
+    },
+    "page_id": {
+      "type": "string",
+      "description": "Page this asset is embedded in (if migrated from a specific page)"
+    },
+    "book_id": {
+      "type": "string",
+      "description": "Book this asset belongs to (if applicable)"
+    },
+    "external_url": {
+      "type": "string",
+      "description": "Original URL in the source system (e.g. BookStack instance) for traceability"
+    },
+    "migrated_from": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "bookstack"
+      ],
+      "default": "manual",
+      "description": "Whether this asset was imported from a BookStack migration or uploaded manually"
+    },
+    "uploaded_by_name": {
+      "type": "string"
+    },
+    "uploaded_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "file_name",
+    "file_url",
+    "file_type"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

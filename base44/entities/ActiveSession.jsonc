@@ -1,0 +1,117 @@
+{
+  "name": "ActiveSession",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "User id of the customer running this session"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "server_id": {
+      "type": "string",
+      "description": "Server this session is streaming from"
+    },
+    "media_title": {
+      "type": "string"
+    },
+    "media_poster_url": {
+      "type": "string",
+      "description": "Thumbnail / poster image URL for the media"
+    },
+    "resolution": {
+      "type": "string",
+      "description": "e.g. 4K HDR, 1080p, 720p"
+    },
+    "stream_mode": {
+      "type": "string",
+      "enum": [
+        "direct_play",
+        "direct_stream",
+        "transcode"
+      ],
+      "default": "direct_play"
+    },
+    "video_codec": {
+      "type": "string"
+    },
+    "audio_codec": {
+      "type": "string"
+    },
+    "current_bitrate_mbps": {
+      "type": "number",
+      "description": "Current stream bitrate in Mbps"
+    },
+    "buffer_health_seconds": {
+      "type": "number",
+      "description": "Buffer depth in seconds"
+    },
+    "transcode_reason": {
+      "type": "string",
+      "description": "Nullable reason for transcoding (e.g. Client requested 1080p 8Mbps, Subtitle PGS overlay)"
+    },
+    "is_buffering": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_id",
+    "server_id",
+    "media_title",
+    "stream_mode"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

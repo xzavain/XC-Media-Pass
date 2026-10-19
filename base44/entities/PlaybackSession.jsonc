@@ -1,0 +1,145 @@
+{
+  "name": "PlaybackSession",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "session_key": {
+      "type": "string"
+    },
+    "play_session_id": {
+      "type": "string",
+      "description": "Platform play session id (Emby/Jellyfin), used as a fallback identifier to stop a stream"
+    },
+    "username": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "device": {
+      "type": "string"
+    },
+    "player": {
+      "type": "string"
+    },
+    "ip_address": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "playing",
+        "paused",
+        "buffering"
+      ]
+    },
+    "transcode_decision": {
+      "type": "string",
+      "enum": [
+        "direct play",
+        "transcode"
+      ]
+    },
+    "progress_percent": {
+      "type": "number"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "bitrate": {
+      "type": "number",
+      "description": "Stream bitrate in kbps"
+    },
+    "video_codec": {
+      "type": "string"
+    },
+    "audio_codec": {
+      "type": "string"
+    },
+    "resolution": {
+      "type": "string"
+    },
+    "container": {
+      "type": "string"
+    },
+    "audio_channels": {
+      "type": "number"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "play_method": {
+      "type": "string"
+    },
+    "transcode_reason": {
+      "type": "string"
+    },
+    "client_app": {
+      "type": "string"
+    },
+    "client_version": {
+      "type": "string"
+    },
+    "elapsed_seconds": {
+      "type": "number"
+    },
+    "duration_seconds": {
+      "type": "number"
+    },
+    "source_resolution": {
+      "type": "string"
+    },
+    "source_video_codec": {
+      "type": "string"
+    },
+    "source_bitrate": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "server_id",
+    "platform",
+    "session_key",
+    "username"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

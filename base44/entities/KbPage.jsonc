@@ -1,0 +1,116 @@
+{
+  "name": "KbPage",
+  "type": "object",
+  "properties": {
+    "book_id": {
+      "type": "string"
+    },
+    "chapter_id": {
+      "type": "string",
+      "description": "Optional \u2014 pages can belong directly to a book with no chapter (BookStack pattern)"
+    },
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly identifier (BookStack pattern)"
+    },
+    "content": {
+      "type": "string",
+      "description": "HTML content from the WYSIWYG editor"
+    },
+    "content_url": {
+      "type": "string",
+      "description": "URL to an uploaded HTML file when content is too large for the content field"
+    },
+    "markdown_content": {
+      "type": "string",
+      "description": "Markdown source content (BookStack supports both WYSIWYG and Markdown editors)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published"
+      ],
+      "default": "draft"
+    },
+    "is_template": {
+      "type": "boolean",
+      "default": false,
+      "description": "BookStack template pages can be used as a starting point for new pages"
+    },
+    "priority": {
+      "type": "number",
+      "default": 0,
+      "description": "Sort order within the chapter or book (BookStack priority field)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "author_email": {
+      "type": "string"
+    },
+    "version": {
+      "type": "number",
+      "default": 1
+    },
+    "view_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "book_id",
+    "title",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

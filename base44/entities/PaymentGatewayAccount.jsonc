@@ -1,0 +1,105 @@
+{
+  "name": "PaymentGatewayAccount",
+  "type": "object",
+  "properties": {
+    "provider": {
+      "type": "string",
+      "enum": [
+        "stripe",
+        "paypal"
+      ],
+      "description": "Payment provider type"
+    },
+    "account_name": {
+      "type": "string",
+      "description": "Friendly label e.g. Main Stripe LLC, Secondary PayPal US"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "api_keys": {
+      "type": "object",
+      "description": "Stripe: { publishable_key, secret_key, webhook_secret }. PayPal: { client_id, client_secret, mode, webhook_id }.",
+      "properties": {
+        "publishable_key": {
+          "type": "string"
+        },
+        "secret_key": {
+          "type": "string"
+        },
+        "webhook_secret": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "live",
+            "sandbox"
+          ]
+        },
+        "webhook_id": {
+          "type": "string"
+        }
+      }
+    },
+    "last_synced_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sync_status": {
+      "type": "string",
+      "enum": [
+        "idle",
+        "in_progress",
+        "success",
+        "failed"
+      ],
+      "default": "idle"
+    },
+    "error_message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "provider",
+    "account_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

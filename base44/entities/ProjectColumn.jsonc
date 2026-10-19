@@ -1,0 +1,69 @@
+{
+  "name": "ProjectColumn",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "project_id",
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

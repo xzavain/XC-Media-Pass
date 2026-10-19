@@ -1,0 +1,78 @@
+{
+  "name": "CannedReply",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short label shown in the picker dropdown"
+    },
+    "body": {
+      "type": "string",
+      "description": "The full pre-written reply text"
+    },
+    "category": {
+      "type": "string",
+      "default": "general",
+      "description": "Grouping label e.g. general, billing, troubleshooting"
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "body"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

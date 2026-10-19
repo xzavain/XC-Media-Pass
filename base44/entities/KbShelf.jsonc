@@ -1,0 +1,84 @@
+{
+  "name": "KbShelf",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Display name of the shelf (BookStack Bookshelf equivalent \u2014 top of the hierarchy)"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly identifier"
+    },
+    "description": {
+      "type": "string"
+    },
+    "cover_image_url": {
+      "type": "string"
+    },
+    "book_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "IDs of KbBook records that belong to this shelf"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

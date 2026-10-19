@@ -1,0 +1,66 @@
+{
+  "name": "SubscriptionPlan",
+  "type": "object",
+  "properties": {
+    "category_id": {
+      "type": "string",
+      "description": "Reference to SubscriptionCategory"
+    },
+    "plan_name": {
+      "type": "string",
+      "description": "e.g. XC P HD, XC Echo 1 Month, Live TV 2 Connections"
+    },
+    "normalized_identifier": {
+      "type": "string",
+      "description": "Unique token used for matching raw product names to this plan"
+    },
+    "default_amount": {
+      "type": "number",
+      "default": 0
+    },
+    "billing_interval": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "quarterly",
+        "semi_annual",
+        "yearly"
+      ],
+      "default": "monthly"
+    }
+  },
+  "required": [
+    "plan_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

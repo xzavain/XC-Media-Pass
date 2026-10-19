@@ -1,0 +1,69 @@
+{
+  "name": "SessionKillLog",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "device_name": {
+      "type": "string"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "emby",
+        "jellyfin"
+      ]
+    },
+    "triggered_by": {
+      "type": "string",
+      "default": "Customer Self-Service"
+    },
+    "terminated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "source_ip": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "device_name",
+    "service_type"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

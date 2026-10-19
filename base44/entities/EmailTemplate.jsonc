@@ -1,0 +1,118 @@
+{
+  "name": "EmailTemplate",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Internal label for this template"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Email subject line (supports shortcodes)"
+    },
+    "body": {
+      "type": "string",
+      "description": "Email or Discord message body (supports shortcodes like *name*, *plan*, *price*)"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "welcome",
+        "billing",
+        "migration",
+        "broadcast",
+        "discord",
+        "custom"
+      ],
+      "default": "custom"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "email",
+        "discord"
+      ],
+      "default": "email"
+    },
+    "supported_shortcodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "name",
+        "email",
+        "plan",
+        "price",
+        "bill_date",
+        "portal_link"
+      ],
+      "description": "Shortcode keys this template uses, for reference display"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "created_by_name": {
+      "type": "string"
+    },
+    "created_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "subject",
+    "body",
+    "channel"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

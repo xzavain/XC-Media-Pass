@@ -1,0 +1,61 @@
+{
+  "name": "ResourceMetric",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string",
+      "description": "Reference to the MediaServer entity"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "cpu_percent": {
+      "type": "number",
+      "description": "Estimated CPU utilization percent at time of snapshot"
+    },
+    "ram_percent": {
+      "type": "number",
+      "description": "Estimated RAM utilization percent at time of snapshot"
+    },
+    "session_count": {
+      "type": "number",
+      "description": "Active playback sessions at time of snapshot"
+    }
+  },
+  "required": [
+    "server_id",
+    "platform",
+    "cpu_percent",
+    "ram_percent"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

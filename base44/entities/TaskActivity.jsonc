@@ -1,0 +1,83 @@
+{
+  "name": "TaskActivity",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "comment",
+        "status_change",
+        "attachment_added",
+        "created",
+        "assignment_change",
+        "priority_change",
+        "date_change",
+        "type_change",
+        "estimate_change",
+        "checklist_update",
+        "ticket_linked",
+        "ticket_unlinked",
+        "dependency_added",
+        "time_logged",
+        "parent_changed"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "description": "Comment text, or a description of the change"
+    },
+    "actor_name": {
+      "type": "string"
+    },
+    "actor_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

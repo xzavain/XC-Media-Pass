@@ -1,0 +1,90 @@
+{
+  "name": "TaskAttachment",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "file_name": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "file_type": {
+      "type": "string",
+      "enum": [
+        "image",
+        "gif",
+        "video",
+        "document",
+        "other"
+      ]
+    },
+    "file_size": {
+      "type": "number",
+      "description": "Size in bytes"
+    },
+    "uploaded_by_name": {
+      "type": "string"
+    },
+    "uploaded_by_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "file_name",
+    "file_url",
+    "file_type"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "staff"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

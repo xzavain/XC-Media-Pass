@@ -1,0 +1,107 @@
+{
+  "name": "DeviceTelemetry",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "plex",
+        "jellyfin",
+        "emby"
+      ]
+    },
+    "username": {
+      "type": "string"
+    },
+    "device": {
+      "type": "string",
+      "description": "Client device name"
+    },
+    "player": {
+      "type": "string",
+      "description": "Player platform"
+    },
+    "client_app": {
+      "type": "string",
+      "description": "Application/product name"
+    },
+    "client_version": {
+      "type": "string"
+    },
+    "ip_address": {
+      "type": "string"
+    },
+    "geo": {
+      "type": "object",
+      "description": "Geolocation: city, country, asn, org, postal, lat, lon"
+    },
+    "transcode_decision": {
+      "type": "string",
+      "enum": [
+        "direct play",
+        "transcode"
+      ]
+    },
+    "resolution": {
+      "type": "string"
+    },
+    "codec": {
+      "type": "string"
+    },
+    "bitrate": {
+      "type": "number",
+      "description": "Stream bitrate in kbps"
+    },
+    "compatibility_score": {
+      "type": "number",
+      "description": "0-100 playback compatibility heuristic"
+    },
+    "streaming_profile": {
+      "type": "string",
+      "description": "e.g. Direct Play (1080p) or Transcode (720p)"
+    },
+    "last_seen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "True if the device had an active stream at last sync"
+    }
+  },
+  "required": [
+    "server_id",
+    "platform",
+    "device",
+    "last_seen"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
