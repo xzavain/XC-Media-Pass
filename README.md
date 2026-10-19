@@ -135,16 +135,26 @@ array/object → `TEXT` holding JSON), plus `users` and `sessions` tables. The
 
 Passwords are hashed with `node:crypto` scrypt (`scrypt$salt$hash`).
 
-## Docker / Coolify
+## Deploy with Coolify
 
+Self-host in a few clicks. You need a Coolify instance connected to your server.
+
+**Option A — from this Git repo (recommended)**
+1. In Coolify: **Projects → your project → Add → Service → Docker Compose**, and point it at this repository.
+2. **Environment variables** — add:
+   - `ADMIN_EMAIL` = your email (required — creates the first admin on boot)
+   - `ADMIN_PASSWORD` = a strong password (required — change it after first login)
+   - `VITE_TMDB_API_KEY` = your TMDB key (optional — enables discovery; must be set as a **build-time** variable so `npm run build` bakes it into the frontend)
+3. **Persistent storage** — the compose file already declares the `xcmp-data` volume mounted at `/app/data` (SQLite database + uploads). In Coolify's service → **Storages**, confirm a persistent volume is attached at `/app/data`.
+4. Click **Deploy**. The healthcheck hits `/api/health`; Coolify shows the service healthy when it responds.
+5. Open the app URL and sign in with the admin email/password from step 2. No demo data is seeded — the database starts empty.
+
+**Option B — plain Docker Compose**
 ```bash
-docker compose up --build -d
+cp .env.example .env        # then set ADMIN_EMAIL / ADMIN_PASSWORD inside .env
+docker compose up -d --build
+# open http://localhost:3000 and sign in
 ```
 
-- The image builds the frontend (`npm run build`) and serves everything from
-  one process on port 3000.
-- Persist `./data` (mounted in `docker-compose.yml`) — it holds the SQLite
-  database and uploads.
-- In Coolify: deploy from this repo (Dockerfile), set `ADMIN_EMAIL`,
-  `ADMIN_PASSWORD`, and `VITE_TMDB_API_KEY` as environment variables, and
-  attach a persistent volume at `/app/data`.
+- The image builds the frontend (`npm run build`) and serves everything from one process on port 3000.
+- Persist the data volume — it holds the SQLite database and uploads.
