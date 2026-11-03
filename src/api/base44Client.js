@@ -145,31 +145,8 @@ const auth = {
     window.location.href = url || '/login';
   },
 
-  async register({ email, password, ...rest }) {
-    const data = await request('POST', '/api/auth/register', {
-      email,
-      password,
-      ...rest,
-    });
-    const token = data?.access_token || data?.token;
-    if (token) storeToken(token);
-    return data;
-  },
-
   setToken(token) {
     storeToken(token);
-  },
-
-  verifyOtp() {
-    return Promise.reject(
-      new Error('Email verification is not configured on this self-hosted instance.')
-    );
-  },
-
-  resendOtp() {
-    return Promise.reject(
-      new Error('Email verification is not configured on this self-hosted instance.')
-    );
   },
 
   resetPasswordRequest() {

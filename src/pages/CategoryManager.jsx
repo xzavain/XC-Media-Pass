@@ -61,9 +61,9 @@ export default function CategoryManager() {
 
   return (
     <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div><h1 className="text-2xl font-heading font-bold text-zinc-100 flex items-center gap-2"><Tags className="w-6 h-6 text-cyan-400" /> Categories & Plans</h1><p className="text-sm text-slate-500 mt-1">Configure product groups, plan tiers, and auto-matching rules</p></div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {!categories.length && <Button onClick={handleSeed} variant="outline" className="border-slate-700 text-zinc-300 hover:bg-slate-800"><Sparkles className="w-4 h-4 mr-1" /> Seed Core Categories</Button>}
           <Button onClick={() => { setEditCat(null); setShowCat(true); }} className="bg-cyan-600 hover:bg-cyan-700 text-white"><Plus className="w-4 h-4 mr-1" /> Category</Button>
           <Button onClick={() => { setEditPlan(null); setShowPlan(true); }} variant="outline" className="border-slate-700 text-zinc-300 hover:bg-slate-800"><Plus className="w-4 h-4 mr-1" /> Plan</Button>

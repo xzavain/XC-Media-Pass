@@ -38,7 +38,7 @@ export default function Stats() {
           </h1>
           <p className="text-sm text-zinc-500 mt-1">Platform-wide streaming telemetry and user engagement analytics</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {subPages.map((sp) => (
             <Link
               key={sp.to}

@@ -15,6 +15,8 @@ import authRoutes, { inviteRouter } from './routes/auth.js';
 import userEntityRoutes from './routes/userEntity.js';
 import entityRoutes from './routes/entities.js';
 import uploadsRoutes, { UPLOADS_DIR, ensureUploadsDir } from './routes/uploads.js';
+import paypalSweepRoutes from './routes/paypalSweep.js';
+import { startSweepScheduler } from './lib/paypalSweep.js';
 
 const DIST_DIR = path.join(ROOT_DIR, 'dist');
 
@@ -37,6 +39,9 @@ export function createApp() {
       brand: { name: 'Xzavain Cloud', product: 'XC Media Pass' },
     });
   });
+
+  app.use('/api/paypal-sweep', paypalSweepRoutes);
+  startSweepScheduler();
 
   app.use('/api/auth', authRoutes);
   app.use('/api/users', inviteRouter); // POST /api/users/invite

@@ -19,8 +19,8 @@ export default function SidebarShell({ navGroups, subtitle, logoutPath }) {
     <TooltipProvider>
       <div className="relative z-10 flex h-screen bg-transparent text-zinc-100 overflow-hidden">
         {/* Mobile top bar */}
-        <div className="md:hidden fixed top-0 left-0 right-0 h-14 z-30 flex items-center justify-between px-4 border-b border-zinc-800/60 bg-zinc-950/90 backdrop-blur-sm">
-          <button onClick={() => setMobileOpen(true)} className="p-2 -ml-2 text-zinc-300">
+        <div className="lg:hidden fixed top-0 left-0 right-0 h-14 z-30 flex items-center justify-between px-4 border-b border-zinc-800/60 bg-zinc-950/90 backdrop-blur-sm">
+          <button onClick={() => setMobileOpen(true)} aria-label="Open menu" className="p-3 -ml-3 text-zinc-300">
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
@@ -32,15 +32,15 @@ export default function SidebarShell({ navGroups, subtitle, logoutPath }) {
 
         {/* Mobile overlay */}
         {mobileOpen && (
-          <div className="md:hidden fixed inset-0 bg-black/60 z-40" onClick={() => setMobileOpen(false)} />
+          <div className="lg:hidden fixed inset-0 bg-black/60 z-40" onClick={() => setMobileOpen(false)} />
         )}
 
         {/* Sidebar */}
         <aside className={`
-          fixed md:relative top-0 left-0 h-full flex flex-col border-r border-zinc-800/60 bg-zinc-950 md:bg-zinc-900/50 backdrop-blur-sm z-50
-          transition-transform md:transition-all duration-300
-          ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
-          w-64 ${collapsed ? "md:w-16" : "md:w-60"}
+          fixed lg:relative top-0 left-0 h-full flex flex-col border-r border-zinc-800/60 bg-zinc-950 lg:bg-zinc-900/50 backdrop-blur-sm z-50
+          transition-transform lg:transition-all duration-300
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
+          w-64 ${collapsed ? "lg:w-16" : "lg:w-60"}
         `}>
           {/* Logo */}
           <div className="flex items-center gap-2.5 px-4 h-16 border-b border-zinc-800/60">
@@ -53,7 +53,7 @@ export default function SidebarShell({ navGroups, subtitle, logoutPath }) {
                 Xzavain Cloud<br />{subtitle}
               </span>
             )}
-            <button onClick={() => setMobileOpen(false)} className="md:hidden ml-auto p-1 text-zinc-400">
+            <button onClick={() => setMobileOpen(false)} aria-label="Close menu" className="lg:hidden ml-auto p-2.5 text-zinc-400">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -128,14 +128,14 @@ export default function SidebarShell({ navGroups, subtitle, logoutPath }) {
           {/* Collapse toggle */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden md:flex absolute -right-3 top-20 w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 items-center justify-center text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors z-10"
+            className="hidden lg:flex absolute -right-3 top-20 w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 items-center justify-center text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors z-10"
           >
             {collapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
           </button>
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden pt-14 md:pt-0">
+        <main className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden pt-14 lg:pt-0">
           <div className="min-h-full">
             <Outlet />
           </div>

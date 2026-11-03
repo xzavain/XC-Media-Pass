@@ -77,6 +77,7 @@ import AdminRewards from '@/pages/AdminRewards';
 import BillingSubscriptions from '@/pages/BillingSubscriptions';
 import CategoryManager from '@/pages/CategoryManager';
 import PaymentGateways from '@/pages/PaymentGateways';
+import PayPalSweep from '@/pages/PayPalSweep';
 import RevenueAnalytics from '@/pages/RevenueAnalytics';
 
 // KB pages (shared between customer and admin)
@@ -217,6 +218,7 @@ const AuthenticatedApp = () => {
           <Route path="/billing/subscriptions" element={<BillingSubscriptions />} />
           <Route path="/billing/categories" element={<CategoryManager />} />
           <Route path="/billing/gateways" element={<PaymentGateways />} />
+          <Route path="/billing/paypal-sweep" element={<PayPalSweep />} />
           <Route path="/billing/reports" element={<RevenueAnalytics />} />
           <Route path="/admin/create-invite" element={<CreateInvite />} />
           <Route path="/admin/trials" element={<Trials />} />

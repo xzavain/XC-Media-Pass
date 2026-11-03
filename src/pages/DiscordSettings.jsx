@@ -99,12 +99,12 @@ export default function DiscordSettings() {
         )}
       </div>
 
-      <div className="flex items-center gap-1 border-b border-zinc-800">
+      <div className="flex items-center gap-1 overflow-x-auto border-b border-zinc-800">
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-4 py-2 text-sm transition-colors border-b-2 -mb-px ${
+            className={`whitespace-nowrap px-4 py-2 text-sm transition-colors border-b-2 -mb-px ${
               tab === t.key
                 ? "text-lime-400 border-lime-500"
                 : "text-zinc-400 border-transparent hover:text-zinc-200"

@@ -48,7 +48,7 @@ export default function KnowledgeBase() {
           <h1 className="text-2xl font-heading font-bold text-zinc-100">Knowledge Base</h1>
           <p className="text-sm text-zinc-500 mt-1">Books, chapters, and pages for documentation and internal guides</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {canManage && (
             <>
               <Button asChild variant="outline" className="border-zinc-700 gap-1.5">

@@ -57,7 +57,7 @@ export default function BillingCalendar() {
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div><h1 className="text-2xl font-heading font-bold text-zinc-100 flex items-center gap-2"><CalendarDays className="w-6 h-6 text-cyan-400" /> Billing Calendar</h1><p className="text-sm text-slate-500 mt-1">Upcoming renewals & projected revenue intake</p></div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" onClick={() => shiftMonth(-1)} className="border-slate-700 text-zinc-300 hover:bg-slate-800"><ChevronLeft className="w-4 h-4" /></Button>

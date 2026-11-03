@@ -4,7 +4,7 @@ import {
   Activity, BarChart3, LifeBuoy, Ticket, Building2, Wallet, CalendarDays,
   BookOpen, ShoppingBag, FolderKanban, Clapperboard, Contact, HeadphonesIcon,
   HardDrive, Gauge, Bot, LineChart, Database, Megaphone, ExternalLink, HeartPulse, Trophy,
-  Tags, CreditCard, ListFilter, Library,
+  Tags, CreditCard, ListFilter, Library, ArrowLeftRight,
 } from "lucide-react";
 import SidebarShell from "./SidebarShell";
 import DashboardBackground from "@/components/DashboardBackground";
@@ -48,6 +48,7 @@ const adminNavGroups = [
       { icon: ListFilter, label: "Subscriptions", path: "/billing/subscriptions" },
       { icon: Tags, label: "Categories & Plans", path: "/billing/categories" },
       { icon: CreditCard, label: "Payment Gateways", path: "/billing/gateways" },
+      { icon: ArrowLeftRight, label: "PayPal Sweep", path: "/billing/paypal-sweep" },
       { icon: BarChart3, label: "Revenue Analytics", path: "/billing/reports" },
     ],
   },

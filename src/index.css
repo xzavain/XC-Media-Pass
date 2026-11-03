@@ -370,3 +370,30 @@
 .dark .placeholder\:text-zinc-600::placeholder {
   color: rgba(255, 255, 255, 0.55);
 }
+
+/* ---- Responsive safety net ----
+   Backstop only: pages are laid out to fit the viewport on their own, but
+   the document itself must never scroll sideways, media must never exceed
+   its container, and phone form controls stay at 16px so iOS Safari does
+   not auto-zoom on focus. */
+html,
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

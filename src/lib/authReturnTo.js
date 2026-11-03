@@ -1,4 +1,4 @@
-// Shared by the auth pages (Login, Register, and any page that resumes a flow
+// Shared by the auth pages (Login, and any page that resumes a flow
 // after sign-in, e.g. the MCP OAuth consent page). Keep the redirect
 // validation in one place — it is security-sensitive and easy to drift.
 

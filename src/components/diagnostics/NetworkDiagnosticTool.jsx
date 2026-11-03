@@ -60,9 +60,9 @@ export default function NetworkDiagnosticTool({ servers, activeSession, sessions
           <h3 className="text-sm font-semibold text-zinc-200">Regional Speed & Latency Diagnostic</h3>
           <p className="text-xs text-zinc-500 mt-0.5">Test your connection to a specific node edge</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Select value={selectedId} onValueChange={setSelectedId}>
-            <SelectTrigger className="bg-zinc-800 border-zinc-700 text-zinc-100 w-[200px]">
+            <SelectTrigger className="bg-zinc-800 border-zinc-700 text-zinc-100 w-[200px] max-w-full">
               <SelectValue placeholder="Select server" />
             </SelectTrigger>
             <SelectContent className="bg-zinc-800 border-zinc-700">
