@@ -60,8 +60,8 @@ router.get('/', (req, res) => {
 // POST /api/entities/User/aggregate — {groupBy, sum} over readable records
 router.post('/aggregate', (req, res) => {
   const { groupBy, sum } = req.body || {};
-  if (!groupBy || !sum) {
-    return res.status(400).json({ error: 'body must include {groupBy, sum}' });
+  if (!groupBy) {
+    return res.status(400).json({ error: 'body must include {groupBy} (sum is optional)' });
   }
   if (!req.user) return deny(res, req); // user list is never public
   let rows = getDb().prepare('SELECT * FROM "users"').all().map(publicUserRow);
@@ -72,13 +72,20 @@ router.post('/aggregate', (req, res) => {
   for (const r of rows) {
     const key = r[groupBy] === undefined ? null : r[groupBy];
     const k = JSON.stringify(key);
-    if (!groups.has(k)) groups.set(k, { key, total: 0 });
-    const v = Number(r[sum]);
-    if (Number.isFinite(v)) groups.get(k).total += v;
+    if (!groups.has(k)) groups.set(k, { key, total: 0, count: 0 });
+    groups.get(k).count += 1;
+    if (sum) {
+      const v = Number(r[sum]);
+      if (Number.isFinite(v)) groups.get(k).total += v;
+    }
   }
   const out = [...groups.values()]
     .sort((a, b) => compareValues(a.key, b.key))
-    .map(({ key, total }) => ({ [groupBy]: key, [`sum_${sum}`]: total }));
+    .map(({ key, total, count }) => ({
+      [groupBy]: key,
+      count,
+      ...(sum ? { [`sum_${sum}`]: total } : {}),
+    }));
   res.json({ rows: out });
 });
 

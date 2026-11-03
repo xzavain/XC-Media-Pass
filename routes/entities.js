@@ -161,21 +161,28 @@ router.post('/:name/aggregate', (req, res) => {
     return res.status(401).json({ error: 'Authentication required' });
   }
   const { groupBy, sum } = req.body || {};
-  if (!groupBy || !sum) {
-    return res.status(400).json({ error: 'body must include {groupBy, sum}' });
+  if (!groupBy) {
+    return res.status(400).json({ error: 'body must include {groupBy} (sum is optional)' });
   }
   const records = fetchAll(schema).filter((r) => canRead(schema, req.user, r));
   const groups = new Map();
   for (const r of records) {
     const key = r[groupBy] === undefined ? null : r[groupBy];
     const k = JSON.stringify(key);
-    if (!groups.has(k)) groups.set(k, { key, total: 0 });
-    const v = Number(r[sum]);
-    if (Number.isFinite(v)) groups.get(k).total += v;
+    if (!groups.has(k)) groups.set(k, { key, total: 0, count: 0 });
+    groups.get(k).count += 1;
+    if (sum) {
+      const v = Number(r[sum]);
+      if (Number.isFinite(v)) groups.get(k).total += v;
+    }
   }
   const rows = [...groups.values()]
     .sort((a, b) => compareValues(a.key, b.key))
-    .map(({ key, total }) => ({ [groupBy]: key, [`sum_${sum}`]: total }));
+    .map(({ key, total, count }) => ({
+      [groupBy]: key,
+      count,
+      ...(sum ? { [`sum_${sum}`]: total } : {}),
+    }));
   res.json({ rows });
 });
 

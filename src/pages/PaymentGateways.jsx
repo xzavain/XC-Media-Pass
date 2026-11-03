@@ -13,6 +13,7 @@ export default function PaymentGateways() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editAccount, setEditAccount] = useState(null);
+  const [syncingId, setSyncingId] = useState(null);
 
   const load = useCallback(async () => {
     const [accs, lg] = await Promise.all([
@@ -25,10 +26,26 @@ export default function PaymentGateways() {
 
   const handleDelete = async (id) => { await base44.entities.PaymentGatewayAccount.delete(id); setAccounts((p) => p.filter((a) => a.id !== id)); toast({ title: "Account removed" }); };
   const handleToggle = async (a, v) => { await base44.entities.PaymentGatewayAccount.update(a.id, { is_active: v }); setAccounts((p) => p.map((x) => (x.id === a.id ? { ...x, is_active: v } : x))); };
-  const handleSync = () => {
-    toast({ title: "Live sync requires Builder+", description: "Use Import on the Subscriptions page to add data manually for now." });
+  const handleSync = async (a) => {
+    setSyncingId(a.id);
+    try {
+      const token = (() => { try { return localStorage.getItem("xcmp_token"); } catch { return null; } })();
+      const res = await fetch(`/api/gateways/${a.id}/sync`, {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `Sync failed (${res.status})`);
+      toast({ title: "Sync complete", description: `${data.pulled ?? 0} records pulled · ${data.updated ?? 0} new` });
+      load();
+    } catch (err) {
+      toast({ title: "Sync failed", description: err.message || "Could not reach the provider.", variant: "destructive" });
+      load();
+    } finally {
+      setSyncingId(null);
+    }
   };
-  const webhookUrl = (a) => `${window.location.origin}/functions/${a.provider}Webhook?accountId=${a.id}`;
+  const webhookUrl = (a) => `${window.location.origin}/api/functions/${a.provider}Webhook?accountId=${a.id}`;
 
   if (loading) return <div className="flex items-center justify-center h-full"><Loader2 className="w-8 h-8 text-cyan-400 animate-spin" /></div>;
 
@@ -38,7 +55,7 @@ export default function PaymentGateways() {
         <div><h1 className="text-2xl font-heading font-bold text-zinc-100 flex items-center gap-2"><CreditCard className="w-6 h-6 text-cyan-400" /> Payment Gateways</h1><p className="text-sm text-slate-500 mt-1">Manage connected Stripe & PayPal accounts</p></div>
         <Button onClick={() => { setEditAccount(null); setShowModal(true); }} className="bg-cyan-600 hover:bg-cyan-700 text-white"><Plus className="w-4 h-4 mr-1" /> Add Account</Button>
       </div>
-      <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 text-xs text-amber-300">Live API sync, webhook endpoints, and the automated 60-minute cron require the Builder+ plan. Add accounts and import subscriptions manually now; live ingestion activates on upgrade.</div>
+      <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/5 p-3 text-xs text-cyan-200">Live sync and webhooks run on this server. Add an account with its API keys, register the webhook URL below in the provider's dashboard, then use Sync Now — or wait for the automatic hourly sync — to pull payments (and Stripe subscriptions, staged under Migration) into the app.</div>
       {accounts.length === 0 ? (
         <div className="text-center py-16 border border-dashed border-slate-800 rounded-xl"><CreditCard className="w-10 h-10 text-slate-700 mx-auto mb-3" /><p className="text-sm text-slate-500">No gateway accounts yet. Add a Stripe or PayPal account to begin.</p></div>
       ) : (
@@ -56,7 +73,7 @@ export default function PaymentGateways() {
                 </div>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                <Button size="sm" variant="outline" onClick={handleSync} className="border-slate-700 text-zinc-300 hover:bg-slate-800"><RefreshCw className="w-3.5 h-3.5 mr-1" /> Sync Now</Button>
+                <Button size="sm" variant="outline" onClick={() => handleSync(a)} disabled={syncingId === a.id} className="border-slate-700 text-zinc-300 hover:bg-slate-800">{syncingId === a.id ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 mr-1" />} Sync Now</Button>
                 <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard?.writeText(webhookUrl(a)); toast({ title: "Webhook URL copied" }); }} className="text-slate-400 hover:text-white"><Copy className="w-3.5 h-3.5 mr-1" /> Webhook URL</Button>
                 <div className="ml-auto flex items-center gap-2"><span className="text-xs text-slate-500">{a.is_active ? "Active" : "Disabled"}</span><Switch checked={!!a.is_active} onCheckedChange={(v) => handleToggle(a, v)} /></div>
               </div>

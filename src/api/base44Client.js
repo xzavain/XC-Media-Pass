@@ -149,16 +149,12 @@ const auth = {
     storeToken(token);
   },
 
-  resetPasswordRequest() {
-    return Promise.reject(
-      new Error('Password reset is not configured on this self-hosted instance.')
-    );
+  async resetPasswordRequest(email) {
+    return request('POST', '/api/auth/reset-request', { email });
   },
 
-  resetPassword() {
-    return Promise.reject(
-      new Error('Password reset is not configured on this self-hosted instance.')
-    );
+  async resetPassword({ resetToken, newPassword } = {}) {
+    return request('POST', '/api/auth/reset', { token: resetToken, password: newPassword });
   },
 };
 
@@ -356,12 +352,16 @@ const users = {
 };
 
 const functions = {
-  invoke(functionName /*, args */) {
-    return Promise.reject(
-      new Error(
-        `Function "${functionName}" is unavailable: Stripe checkout is not configured on this self-hosted instance.`
-      )
-    );
+  /**
+   * Backend functions, self-hosted: POST /api/functions/<name>.
+   * Resolves with the SDK's shape ({ data }) — e.g. Checkout.jsx reads
+   * res.data.url from createCheckoutSession. Unknown functions and
+   * unconfigured providers reject with the server's error message, which
+   * the UI surfaces instead of failing silently.
+   */
+  async invoke(functionName, args) {
+    const data = await request('POST', `/api/functions/${encodeURIComponent(functionName)}`, args ?? {});
+    return { data };
   },
 };
 
@@ -382,15 +382,13 @@ function readFileAsBase64(file) {
 const integrations = {
   Core: {
     /**
-     * Best-effort email stub. Never throws — call sites tally results and the
-     * app treats a missing mailer as a soft failure.
+     * Outbound email via the server's SMTP configuration
+     * (POST /api/integrations/email). Rejects when email is not configured
+     * or delivery fails, so callers (campaign dispatch, notifications)
+     * tally the failure honestly instead of counting it as sent.
      */
-    SendEmail({ to, subject } = {}) {
-      console.warn(
-        '[shim] SendEmail skipped — email sending is not configured on this self-hosted instance.',
-        { to, subject }
-      );
-      return Promise.resolve({ ok: false, notice: 'Email sending is not configured' });
+    async SendEmail({ to, subject, body } = {}) {
+      return request('POST', '/api/integrations/email', { to, subject, body });
     },
 
     async UploadFile({ file } = {}) {

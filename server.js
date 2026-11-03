@@ -16,7 +16,12 @@ import userEntityRoutes from './routes/userEntity.js';
 import entityRoutes from './routes/entities.js';
 import uploadsRoutes, { UPLOADS_DIR, ensureUploadsDir } from './routes/uploads.js';
 import paypalSweepRoutes from './routes/paypalSweep.js';
+import functionsRoutes from './routes/functions.js';
+import integrationsRoutes from './routes/integrations.js';
+import gatewaysRoutes from './routes/gateways.js';
+import invitesRoutes from './routes/invites.js';
 import { startSweepScheduler } from './lib/paypalSweep.js';
+import { startGatewaySyncScheduler } from './lib/gateways.js';
 
 const DIST_DIR = path.join(ROOT_DIR, 'dist');
 
@@ -25,6 +30,10 @@ export function createApp() {
   ensureUploadsDir();
   const app = express();
   app.disable('x-powered-by');
+  // Webhook endpoints need the exact raw body for signature verification,
+  // so they get a raw parser before the JSON parser below.
+  app.use('/api/functions/stripeWebhook', express.raw({ type: '*/*', limit: '5mb' }));
+  app.use('/api/functions/paypalWebhook', express.raw({ type: '*/*', limit: '5mb' }));
   // 15 MB JSON limit: base64 uploads inflate ~33%, while the decoded file
   // itself is capped at 10 MB in the upload handler.
   app.use(express.json({ limit: '15mb' }));
@@ -42,9 +51,14 @@ export function createApp() {
 
   app.use('/api/paypal-sweep', paypalSweepRoutes);
   startSweepScheduler();
+  startGatewaySyncScheduler();
 
   app.use('/api/auth', authRoutes);
   app.use('/api/users', inviteRouter); // POST /api/users/invite
+  app.use('/api/functions', functionsRoutes); // checkout + provider webhooks
+  app.use('/api/integrations', integrationsRoutes); // outbound email
+  app.use('/api/gateways', gatewaysRoutes); // manual gateway sync
+  app.use('/api/invites', invitesRoutes); // public media-invite landing/activation
   app.use('/api', uploadsRoutes); // POST /api/uploads
   // The built-in User entity (virtualized onto the users table) must be
   // mounted before the generic entity router.
@@ -60,8 +74,14 @@ export function createApp() {
   // Unknown API routes -> JSON 404 (before the static/SPA fallback).
   app.use('/api', (req, res) => res.status(404).json({ error: 'Unknown API route' }));
 
-  // Uploaded files.
-  app.use('/uploads', express.static(UPLOADS_DIR));
+  // Uploaded files. The sandbox CSP keeps uploaded SVGs/documents from
+  // executing scripts in the app's origin while images still render.
+  app.use('/uploads', express.static(UPLOADS_DIR, {
+    setHeaders: (res) => {
+      res.setHeader('Content-Security-Policy', 'sandbox');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+    },
+  }));
 
   // Serve the Vite build if present, with SPA fallback.
   if (fs.existsSync(path.join(DIST_DIR, 'index.html'))) {

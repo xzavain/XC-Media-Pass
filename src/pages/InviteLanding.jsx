@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 import { Tv, CheckCircle2, AlertCircle, Loader2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +9,7 @@ import PlatformBadge from "@/components/shared/PlatformBadge";
 export default function InviteLanding() {
   const { token } = useParams();
   const [invitation, setInvitation] = useState(null);
+  const [serverUrl, setServerUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
@@ -23,27 +23,17 @@ export default function InviteLanding() {
     loadInvitation();
   }, [token]);
 
+  // Token-scoped public endpoints (the Invitation entity itself is
+  // own-email/admin RLS, which a not-yet-registered invitee can't satisfy).
   const loadInvitation = async () => {
     try {
-      const invitations = await base44.entities.Invitation.filter({ token });
-      if (!invitations.length) {
-        setError("invalid");
+      const res = await fetch(`/api/invites/${encodeURIComponent(token)}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "invalid");
         return;
       }
-      const inv = invitations[0];
-      if (inv.status === "revoked") {
-        setError("revoked");
-        return;
-      }
-      if (inv.status === "expired" || new Date(inv.expires_at) < new Date()) {
-        setError("expired");
-        return;
-      }
-      if (inv.use_count >= inv.max_uses) {
-        setError("used");
-        return;
-      }
-      setInvitation(inv);
+      setInvitation(data.invitation);
     } catch {
       setError("invalid");
     } finally {
@@ -56,25 +46,24 @@ export default function InviteLanding() {
     if (!username || !password) return;
     setSubmitting(true);
     try {
-      // In production: this would call the media server API to create the user
-      // For now, we update the invitation record
-      await base44.entities.Invitation.update(invitation.id, {
-        username,
-        email: email || undefined,
-        status: "active",
-        activated_at: new Date().toISOString(),
-        use_count: (invitation.use_count || 0) + 1,
+      // The server creates the account on the target media server
+      // (Emby/Jellyfin user creation, or a Plex invite by email), then
+      // marks this invitation activated.
+      const res = await fetch(`/api/invites/${encodeURIComponent(token)}/activate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email: email || undefined, password }),
       });
-
-      await base44.entities.ActivityLog.create({
-        action: "invite_activated",
-        invitation_id: invitation.id,
-        server_id: invitation.server_id,
-        username,
-        platform: invitation.platform,
-        details: `${username} activated invite for ${invitation.server_name}`,
-      });
-
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if (data.error && ["invalid", "revoked", "expired", "used"].includes(data.error)) {
+          setError(data.error);
+        } else {
+          setError("failed");
+        }
+        return;
+      }
+      setServerUrl(data.server_url || null);
       setSuccess(true);
     } catch (err) {
       setError("failed");
@@ -129,8 +118,7 @@ export default function InviteLanding() {
             <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-lg p-4 text-left">
               <p className="text-xs text-zinc-500 mb-2">Connect to:</p>
               <p className="text-sm text-zinc-200 font-mono break-all">
-                {/* Would display the actual server URL for the user to connect */}
-                {invitation.server_name}
+                {serverUrl || invitation.server_name}
               </p>
             </div>
           )}

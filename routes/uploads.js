@@ -19,7 +19,15 @@ const router = Router();
 
 export const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
-const ALLOWED_EXT = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf']);
+// Images and PDFs for KB/content, plus the document/log/archive/media
+// types the support desk and project features attach (the original app
+// stored arbitrary attachment types on the platform's file storage).
+const ALLOWED_EXT = new Set([
+  'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf',
+  'txt', 'log', 'csv', 'json', 'md',
+  'zip', 'mp4', 'webm', 'mp3', 'wav',
+  'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
+]);
 
 export function ensureUploadsDir() {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
